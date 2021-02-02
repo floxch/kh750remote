@@ -12,3 +12,5 @@ Neither do I know how to handle modified npm packages, which is why you find a m
 
 There are many things left to do and to improve, please feel free to help.
 
+For the moment, if you use this, please make sure there are no other devices supporting Sennheiser Sound Control in your network besides one KH 750.
+
