@@ -29,15 +29,15 @@ var mdns = require('multicast-dns')(
 //   server.close();
 // });
 
-var targetIP;
-var client;
-var xid = 1;
+var targetIP = [];
+var client = [];
+var xid = [1,1];
 var muted = false;
 var topsonly = false;
 var subonly = false;
 var dimmed = false;
 var volume = 50.0;
-const expectedWooferCount = 1; // Todo: 2
+const expectedWooferCount = 2;
 const maxVolume = 99.0;  // there are more steps, but the woofer will switch to another reference level which is annoying
 
 var endsequence = '}}\r\n'
@@ -95,45 +95,51 @@ function mute()
 {
   if (!muted)
   {
-    client.send(muteall1+xid+endsequence);
-    xid++;
-    client.send(muteall2+xid+endsequence);
-    xid++;
-    client.send(muteall3+xid+endsequence);
-    xid++;
-    client.send(muteall4+xid+endsequence);
-    xid++;
-    client.send(muteall5+xid+endsequence);
-    xid++;
-    client.send(muteall6+xid+endsequence);
-    xid++;
-    client.send(muteall7+xid+endsequence);
-    xid++;
-    client.send(muteall8+xid+endsequence);
-    xid++;
-    client.send(muteall9+xid+endsequence);
-    xid++;
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(muteall1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall3+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall4+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall5+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall6+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall7+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall8+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(muteall9+xid[index]+endsequence);
+      xid[index]++;
+    })
     muted = true;
   }
   else{
-    client.send(unmuteall1+xid+endsequence);
-    xid++;
-    client.send(unmuteall2+xid+endsequence);
-    xid++;
-    client.send(unmuteall3+xid+endsequence);
-    xid++;
-    client.send(unmuteall4+xid+endsequence);
-    xid++;
-    client.send(unmuteall5+xid+endsequence);
-    xid++;
-    client.send(unmuteall6+xid+endsequence);
-    xid++;
-    client.send(unmuteall7+xid+endsequence);
-    xid++;
-    client.send(unmuteall8+xid+endsequence);
-    xid++;
-    client.send(unmuteall9+xid+endsequence);
-    xid++;
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(unmuteall1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall3+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall4+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall5+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall6+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall7+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall8+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmuteall9+xid[index]+endsequence);
+      xid[index]++;
+    })
     muted = false;
   }    
 }
@@ -142,14 +148,21 @@ function dim()
 {
   if (!dimmed)
   {
-    client.send(dimm+xid+endsequence);
-    xid++;
-    dimmed = true;
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(dimm+xid[index]+endsequence);
+      xid[index]++;
+      dimmed = true;
+    })
   }
-  else{
-    client.send(undimm+xid+endsequence);
-    xid++;
-    dimmed = false;
+  else
+  {
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(undimm+xid[index]+endsequence);
+      xid[index]++;
+      dimmed = false;
+    })
   }    
 }
 
@@ -157,21 +170,28 @@ function mutesub()
 {
   if (!subonly)
   {
-    client.send(mutesub1+xid+endsequence);
-    xid++;
-    client.send(mutesub2+xid+endsequence);
-    xid++;
-    client.send(mutesub3+xid+endsequence);
-    xid++;
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(mutesub1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutesub2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutesub3+xid[index]+endsequence);
+      xid[index]++;
+    })
     subonly = true;
   }
-  else{
-    client.send(unmutesub1+xid+endsequence);
-    xid++;
-    client.send(unmutesub2+xid+endsequence);
-    xid++;
-    client.send(unmutesub3+xid+endsequence);
-    xid++;
+  else
+  {
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(unmutesub1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutesub2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutesub3+xid[index]+endsequence);
+      xid[index]++;
+    })
     subonly = false;
   }    
 }
@@ -180,42 +200,52 @@ function mutetops()
 {
   if (!topsonly)
   {
-    client.send(mutetops1+xid+endsequence);
-    xid++;
-    client.send(mutetops2+xid+endsequence);
-    xid++;
-    client.send(mutetops3+xid+endsequence);
-    xid++;
-    client.send(mutetops4+xid+endsequence);
-    xid++;
-    client.send(mutetops5+xid+endsequence);
-    xid++;
-    client.send(mutetops6+xid+endsequence);
-    xid++;
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(mutetops1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutetops2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutetops3+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutetops4+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutetops5+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(mutetops6+xid[index]+endsequence);
+      xid[index]++;
+    })
     topsonly = true;
   }
-  else{
-    client.send(unmutetops1+xid+endsequence);
-    xid++;
-    client.send(unmutetops2+xid+endsequence);
-    xid++;
-    client.send(unmutetops3+xid+endsequence);
-    xid++;
-    client.send(unmutetops4+xid+endsequence);
-    xid++;
-    client.send(unmutetops5+xid+endsequence);
-    xid++;
-    client.send(unmutetops6+xid+endsequence);
-    xid++;
+  else
+  {
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(unmutetops1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutetops2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutetops3+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutetops4+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutetops5+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(unmutetops6+xid[index]+endsequence);
+      xid[index]++;
+    })
     topsonly = false;
   } 
 }
 
 function writeVolume()
 {
+  targetIP.forEach(function(item, index, array)
+  {
+    client[index].send(setlevel1+volume+setlevel2+xid[index]+endsequence);
+    xid[index]++;
+  })
   console.log('Volume: '+volume);
-  client.send(setlevel1+volume+setlevel2+xid+endsequence);
-  xid++;
 }
 
 var oldControllerValue = 1000;
@@ -329,28 +359,53 @@ setTimeout(timeout, 100);
  
 var wooferCount = 0;
 mdns.on('response', function(response) {
+ // console.log('got a response packet:', response)
   // todo: some proper testing if the found device is actually a KH 750
   if (wooferCount === expectedWooferCount)
   {
     return;
   }
-  //console.log('got a response packet:', response)
   if (typeof response.additionals[0] === 'undefined' || typeof response.additionals[0].data === 'undefined')
   {
     return;
   }
-  targetIP = response.additionals[0].data;
-  console.log ('ip',targetIP)
-  client = new Client(targetIP, 45);
+  var substr;
+  var str = response.additionals[0].name;
+  if (str.length > 5)
+  {
+    substr = str.substring(0, 5);
+  }
+  else
+  {
+    return;
+  }
+  if (substr !== 'KH750')
+  {
+    return;
+  }
+  targetIP.forEach(function(item, index, array)
+  {
+    if (response.additionals[0].data === item)
+    {
+      return;
+    }
+  })
+  targetIP.push(response.additionals[0].data);
+  console.log ('IPs',targetIP[0],targetIP[1])
+  client.push(new Client(targetIP[targetIP.length - 1], 45));
 
   
-  client.send('{"device":{"identity":{"product":null}},"osc":{"xid":'+xid+'}}\r\n', (err) => {
-    if (err) console.error(err);
-    client.close();
+  client[targetIP.length - 1].send('{"device":{"identity":{"product":null}},"osc":{"xid":'+xid[targetIP.length - 1]+'}}\r\n', (err) => {
+    console.log('Error opening socket. '+err)
+    process.exit(1);
   });
-  xid++;
-  writeVolume();
+  xid[targetIP.length - 1]++;
   wooferCount++;
+
+  if (wooferCount === expectedWooferCount)
+  {
+    writeVolume();
+  }
 })
  
 // mdns.on('query', function(query) {
