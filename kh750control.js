@@ -36,7 +36,8 @@ var muted = false;
 var topsonly = false;
 var subonly = false;
 var dimmed = false;
-var volume = 50.0;
+var bmBypass = false;
+var volume = 40.0;
 const expectedWooferCount = 2;
 const maxVolume = 99.0;  // there are more steps, but the woofer will switch to another reference level which is annoying
 
@@ -90,6 +91,44 @@ var mutesub3 = '{"audio":{"out5":{"mixer":{"levels":[-100.0,-100.0]}}},"osc":{"x
 var unmutesub1 = '{"audio":{"out5":{"eq1":{"in1":{"enabled":[true,true]}}}},"osc":{"xid":'
 var unmutesub2 = '{"audio":{"out5":{"eq1":{"in2":{"enabled":[true,true]}}}},"osc":{"xid":'
 var unmutesub3 = '{"audio":{"out5":{"mixer":{"levels":[0.0,0.0]}}},"osc":{"xid":' 
+
+var disableBM1 = '{"audio":{"out1":{"mixer":{"levels":[0.0,-100.0]}}},"osc":{"xid":'
+var disableBM2 = '{"audio":{"out1":{"eq1":{"in1":{"enabled":[false,false]}}}},"osc":{"xid":'
+var disableBM3 = '{"audio":{"out1":{"eq1":{"in2":{"enabled":[false,false]}}}},"osc":{"xid":'
+var disableBM4 = '{"audio":{"out1":{"eq2":{"enabled":[false,false,false,false,false,false,false,false,false,false]}}},"osc":{"xid":'
+var disableBM5 = '{"audio":{"out2":{"mixer":{"levels":[-100.0,0.0]}}},"osc":{"xid":'
+var disableBM6 = '{"audio":{"out2":{"eq1":{"in1":{"enabled":[false,false]}}}},"osc":{"xid":'
+var disableBM7 = '{"audio":{"out2":{"eq1":{"in2":{"enabled":[false,false]}}}},"osc":{"xid":'
+var disableBM8 = '{"audio":{"out2":{"eq2":{"enabled":[false,false,false,false,false,false,false,false,false,false]}}},"osc":{"xid":'
+var disableBM9 = '{"audio":{"out5":{"mixer":{"levels":[-100.0,-100.0]}}},"osc":{"xid":'
+var disableBM10 = '{"audio":{"out5":{"eq1":{"in1":{"enabled":[false,false]}}}},"osc":{"xid":'
+var disableBM11 = '{"audio":{"out5":{"eq1":{"in2":{"enabled":[false,false]}}}},"osc":{"xid":'
+
+var enableBM1 = '{"audio":{"out1":{"eq1":{"in1":{"q":[0.707,0.707]}}}},"osc":{"xid":'
+var enableBM2 = '{"audio":{"out1":{"eq1":{"in1":{"frequency":[80.0,80.0]}}}},"osc":{"xid":'
+var enableBM3 = '{"audio":{"out1":{"eq1":{"in1":{"gain":[0.0,0.0]}}}},"osc":{"xid":'
+var enableBM4 = '{"audio":{"out1":{"eq1":{"in1":{"type":["HIGHPASS","HIGHPASS"]}}}},"osc":{"xid":'
+var enableBM5 = '{"audio":{"out1":{"eq1":{"in1":{"enabled":[true,true]}}}},"osc":{"xid":'
+var enableBM6 = '{"audio":{"out1":{"eq1":{"in2":{"q":[0.707,0.707]}}}},"osc":{"xid":'
+var enableBM7 = '{"audio":{"out1":{"eq1":{"in2":{"frequency":[80.0,80.0]}}}},"osc":{"xid":'
+var enableBM8 = '{"audio":{"out1":{"eq1":{"in2":{"gain":[0.0,0.0]}}}},"osc":{"xid":'
+var enableBM9 = '{"audio":{"out1":{"eq1":{"in2":{"type":["HIGHPASS","HIGHPASS"]}}}},"osc":{"xid":'
+var enableBM10 = '{"audio":{"out1":{"eq1":{"in2":{"enabled":[true,true]}}}},"osc":{"xid":'
+var enableBM11 = '{"audio":{"out1":{"eq2":{"enabled":[false,false,false,false,false,false,false,false,false,false]}}},"osc":{"xid":'
+var enableBM12 = '{"audio":{"out2":{"eq1":{"in1":{"q":[0.707,0.707]}}}},"osc":{"xid":'
+var enableBM13 = '{"audio":{"out2":{"eq1":{"in1":{"frequency":[80.0,80.0]}}}},"osc":{"xid":'
+var enableBM14 = '{"audio":{"out2":{"eq1":{"in1":{"gain":[0.0,0.0]}}}},"osc":{"xid":'
+var enableBM15 = '{"audio":{"out2":{"eq1":{"in1":{"type":["HIGHPASS","HIGHPASS"]}}}},"osc":{"xid":'
+var enableBM16 = '{"audio":{"out2":{"eq1":{"in1":{"enabled":[true,true]}}}},"osc":{"xid":'
+var enableBM17 = '{"audio":{"out2":{"eq1":{"in2":{"q":[0.707,0.707]}}}},"osc":{"xid":'
+var enableBM18 = '{"audio":{"out2":{"eq1":{"in2":{"frequency":[80.0,80.0]}}}},"osc":{"xid":'
+var enableBM19 = '{"audio":{"out2":{"eq1":{"in2":{"gain":[0.0,0.0]}}}},"osc":{"xid":'
+var enableBM20 = '{"audio":{"out2":{"eq1":{"in2":{"type":["HIGHPASS","HIGHPASS"]}}}},"osc":{"xid":'
+var enableBM21 = '{"audio":{"out2":{"eq1":{"in2":{"enabled":[true,true]}}}},"osc":{"xid":'
+var enableBM22 = '{"audio":{"out2":{"eq2":{"enabled":[false,false,false,false,false,false,false,false,false,false]}}},"osc":{"xid":'
+var enableBM23 = '{"audio":{"out5":{"mixer":{"levels":[0.0,0.0]}}},"osc":{"xid":'
+var enableBM24 = '{"audio":{"out5":{"eq1":{"in1":{"enabled":[true,true]}}}},"osc":{"xid":'
+var enableBM25 = '{"audio":{"out5":{"eq1":{"in2":{"enabled":[true,true]}}}},"osc":{"xid":'
 
 function mute() 
 {
@@ -235,6 +274,96 @@ function mutetops()
       xid[index]++;
     })
     topsonly = false;
+  } 
+}
+
+function bassmanagement()
+{
+  if (!bmBypass)
+  {
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(disableBM1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM3+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM4+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM5+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM6+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM7+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM8+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM9+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM10+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(disableBM11+xid[index]+endsequence);
+      xid[index]++;
+    })
+    bmBypass = true;
+  }
+  else
+  {
+    targetIP.forEach(function(item, index, array)
+    {
+      client[index].send(enableBM1+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM2+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM3+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM4+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM5+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM6+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM7+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM8+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM9+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM10+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM11+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM12+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM13+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM14+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM15+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM16+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM17+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM18+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM19+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM20+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM21+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM22+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM23+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM24+xid[index]+endsequence);
+      xid[index]++;
+      client[index].send(enableBM25+xid[index]+endsequence);
+      xid[index]++;
+    })
+    bmBypass = false;
   } 
 }
 
@@ -455,6 +584,10 @@ usbdev.on("data", function(data) {
   else if (data[3] === 128) // second to right button
   {
     mutetops();
+  }
+  else if (data[4] === 1) // right button
+  {
+    bassmanagement();
   }
 
   controlVolume2(data[0]); // jog wheel
